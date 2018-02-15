@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>vue.js</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script src="vue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="app.js" type="text/javascript" charset="utf-8"></script>
+	<style>
+		input.inputText{
+			width: 100%;
+			appearance: none;
+			border: 1px solid #ccc;
+			padding: 5px;
+		}
+	</style>
+</head>
+<body style="margin: 30px;">
+	<div id="list">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">項目</label>
+				<div class="col-sm-4">
+					<input v-model="item" class="form-control" type="text" v-on:keyup.enter="addData(id)">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">価格</label>
+				<div class="col-sm-4">
+					<input v-model="price" class="form-control" type="text" v-on:keyup.enter="addData(id)">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-4">
+					<button type="button" class="btn btn-primary" v-on:click="addData(id)" v-bind:data-id="id">登録</button>
+				</div>
+			</div>
+		</form>
+		<h4 v-if="!invalue" class="text-center text-danger"><strong>項目、または価格を入力してください</strong></h4>
+		<div class="container">
+			<table class="table table-striped table-bordered">
+				<tr>
+					<th>項目</th>
+					<th>価格</th>
+					<th></th>
+				</tr>
+				<tr v-for="list in lists" v-bind:data-id="list.id">
+					<td v-on:click="list.edit_flag.item = true" class="col-md-6" style="vertical-align: middle;">
+						<span v-if="!list.edit_flag.item">{{list.item}}</span>
+						<span v-else><input type="text" class="inputText" v-model="list.item" v-on:keyup.enter="updateList(list, $event)" v-on:blur="updateList(list, $event)" v-auto-focus></span>
+					</td>
+					<td v-on:click="list.edit_flag.price = true" class="col-md-3" style="vertical-align: middle;">
+						<span v-if="!list.edit_flag.price">{{list.price}}円</span>
+						<span v-else><input type="text" class="inputText" v-model="list.price" v-on:keyup.enter="updateList(list, $event)" v-on:blur="updateList(list, $event)" v-auto-focus></span>
+					</td>
+					<td class="col-md-1" style="vertical-align: middle; text-align: center;">
+						<button v-on:click="delelteList(list)" class="btn btn-danger btn-block">削除</button>
+					</td>
+				</tr>
+				<tr>
+					<td>品目：<b>{{countItem}}点</b></td>
+					<td>合計：<b>{{sumPrice}}円</b></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<ol>
+		</ol>
+	</div>
+</body>
+</html>
